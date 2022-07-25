@@ -34,8 +34,8 @@ const record_ctrl=require("./record.ctrl");
 
 
 //예시
-router.get("/QA", checkToken.auth.check, qa_ctrl.process.getQA);
-router.post("/QA", checkToken.auth.check, qa_ctrl.process.saveQA);
-router.get("/QA/calendar", checkToken.auth.check, qa_ctrl.process.getQAcalendar);
+// router.get("/QA", checkToken.auth.check, qa_ctrl.process.getQA);
+// router.post("/QA", checkToken.auth.check, qa_ctrl.process.saveQA);
+// router.get("/QA/calendar", checkToken.auth.check, qa_ctrl.process.getQAcalendar);
 
 module.exports=router;
