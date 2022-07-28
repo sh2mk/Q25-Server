@@ -4,7 +4,7 @@ module.exports = function(app) {
     
 
     // 0. test API
-    app.get('/members/test', user,getTest);
+    app.get('/members/test', user.getTest);
 
     /*
     const path = require("path");

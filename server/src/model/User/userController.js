@@ -3,7 +3,7 @@
 //const jwtMiddleware = require("");
 const userProvider = require("../User/userProvider");
 const userService = require("../User/userService");
-const baseResponse = require("../../config/baseResponseStatus");
+const baseResponse = require("../../../config/baseResponseStatus");
 //const {response, errResponse} = require("");
 
 /*

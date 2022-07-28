@@ -2,6 +2,7 @@
 //User=데이터를 가지고 검증 및 조작하는 역할만 수행
 //jwt=header의 인코딩 값과 payload의 인코딩 값을 합친 해시값
 
+/*
 const BadgeStorage=require("./BadgeStorage");
 
 const BadgeInfo = require("./BadgeInfo");
@@ -93,5 +94,5 @@ class Badge{
 
 module.exports=Badge;
 
-
+*/
 

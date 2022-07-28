@@ -2,7 +2,7 @@
 
 const db=require("../../config/db"); //db 위치
 
-
+/*
 class BadgeStorage {
 
     //뱃지 조회 정보 출력 
@@ -37,3 +37,5 @@ class BadgeStorage {
 
 
 module.exports=BadgeStorage;
+
+*/
