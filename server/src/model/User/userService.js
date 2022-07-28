@@ -1,3 +1,4 @@
+// 조회 이외의 모든 작업 처리
 
 const userProvider = require("./userProvider");
 const userDao = require("./userDao");

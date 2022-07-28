@@ -3,7 +3,8 @@
 
 "use strict";
 
-const express=require("express");
+const express = require('../../config/express');
+//const {logger} = require('winston');
 const router=express.Router();
 
 
@@ -30,7 +31,7 @@ const record_ctrl=require("./record.ctrl");
 
 //router.post("/join/new" , record_ctrl.)
 
-
+router.get("/members/test", getTest);
 
 
 //예시

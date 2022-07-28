@@ -1,5 +1,12 @@
 module.exports = function(app) {
     const user = require("./userController");
+    // const jwtMiddleware = require(''); // TODO : middleware 처리할 것
+    
+
+    // 0. test API
+    app.get('/members/test', user,getTest);
+
+    /*
     const path = require("path");
     var express = require("express");
     var router = express.Router();
@@ -16,7 +23,6 @@ module.exports = function(app) {
         res.send(result);
     })
 
-    // 0. test API
-    app.get('//members/test');
+   */
 
 }
