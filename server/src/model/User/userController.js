@@ -14,3 +14,37 @@ const {response, errResponse} = require("../../../config/response");
 exports.getTest = async function (req,res) {
     return res.send(response(baseResponse.SUCCESS));
 };
+
+/*
+    API NO. 1
+    API Name : 회원가입 API
+    [POST] /members/signup
+*/
+exports.postUsers = async function (req, res) {
+    /*
+        body : nickName, email, password
+    */
+   const { nickName, email, password } = req.body;
+
+   if(!nickName) {
+        return res.send(response(baseResponse.SIGNUP_NICKNAME_EMPTY));
+   } else if(nickName.length > 10){
+        return res.send(response(baseResponse.SIGNUP_NICKNAME_LENGTH));
+   }
+
+   if(!email) {
+        return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
+   } else if(email.length > 30){
+        return res.send(response(baseResponse.SIGNUP_EMAIL_LENGTH));
+   }
+   // TODO : 이메일 형식 체크
+   // TODO : 비밀번호 형식적 validation 필요?
+
+   const signUpResponse = await userService.createUser(
+        nickName,
+        email,
+        password
+   );
+
+   return res.send(signUpResponse);
+}

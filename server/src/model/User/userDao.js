@@ -1,12 +1,10 @@
 
-// 모든 유저 조회
-async function selectUser(connection){
-    const selectUserListQuery = `
-        SELECT email, nickname
-        FROM userTBL
-    `
+// 이메일로 회원 조회
+async function selectUserEmail(email) { //TODO : DB 연결시 수정
+    const selectUserEmailQuery = `
+        SELECT 
+    `;
 }
-
 module.exports = {
     selectUser,
 };

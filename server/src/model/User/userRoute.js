@@ -6,23 +6,9 @@ module.exports = function(app) {
     // 0. test API
     app.get('/members/test', user.getTest);
 
-    /*
-    const path = require("path");
-    var express = require("express");
-    var router = express.Router();
-
-    var controller_main = require("../controllers/login-controller");
+    // 1. 회원가입 API
+    app.post('/members/signup', user.postUsers);
 
 
-    //회원가입
-    router.get("/signup", function(req, res){
-        res.sendFile(path.join(__dirname, "../public/login.html")) //TODO: 경로 수정
-    });
-    router.post("signup", async function(req,res){
-        var result = await controller_main.Signup(req,res);
-        res.send(result);
-    })
-
-   */
 
 };
