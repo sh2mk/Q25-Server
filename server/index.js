@@ -11,6 +11,6 @@ app.listen(port, function(){
 const express = require("./config/express");
 const {logger} = require("./config/winston");
 
-const port = 5000; //원하는 port 번호로 수정
+const port = 8080; //원하는 port 번호로 수정
 express().listen(port);
 logger.info(`${process.env.NODE_ENV } - API Server Start At port ${port}`);

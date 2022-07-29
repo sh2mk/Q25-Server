@@ -1,6 +1,6 @@
 module.exports = function(app) {
     const user = require("./userController");
-    // const jwtMiddleware = require(''); // TODO : middleware 처리할 것
+    const jwtMiddleware = require('../../../config/jwtMiddleware');
     
 
     // 0. test API
@@ -25,4 +25,4 @@ module.exports = function(app) {
 
    */
 
-}
+};
