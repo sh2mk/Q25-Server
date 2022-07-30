@@ -10,6 +10,8 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const { createPool } = require("mysql");
 
+
+// 회원가입 api 관련
 exports.createUser = async function (nickName, email, password) {
     try{
         // 이메일 중복 확인
@@ -19,7 +21,7 @@ exports.createUser = async function (nickName, email, password) {
         }
 
         // 비밀번호 암호화
-        // TODO : 수정할 것
+        // TODO : 수정 예정
         const hashedPassword = await crypto
             .createHash("sha512")
             .update(password)
@@ -27,7 +29,9 @@ exports.createUser = async function (nickName, email, password) {
         const insetUserInfoParams = [nickName, email, password];
         //const Connection = await pool.getConnection(async (conn) => conn); //TODO : DB 연결 시 수정
 
-        const userIdResult = await userDao.insertInfo(insertUserInfoParams); //TODO : DB 연결 시 수정할 수도
+        const userIdResult = await userDao.insertUserInfo(insertUserInfoParams); //TODO : DB 연결 시 수정할 수도
+        //insertInfo...?
+        
         console.log(`추가된 회원 : ${userIdResult[0].insertId}`);
         // connection.release();
         return response(baseResponse.SUCCESS);

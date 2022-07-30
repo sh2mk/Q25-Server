@@ -15,11 +15,13 @@ exports.getTest = async function (req,res) {
     return res.send(response(baseResponse.SUCCESS));
 };
 
+
 /*
     API NO. 1
     API Name : 회원가입 API
     [POST] /members/signup
 */
+
 exports.postUsers = async function (req, res) {
     /*
         body : nickName, email, password
