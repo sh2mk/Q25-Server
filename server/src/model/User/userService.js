@@ -1,5 +1,7 @@
 // create, update, delete 등 조회 이외의 작업 처리
 const {logger} = require("../../../config/winston");
+const { pool } = require("../../../config/database");
+
 const userProvider = require("./userProvider");
 const userDao = require("./userDao");
 const baseResponse = require("../../../config/baseResponseStatus");
@@ -8,7 +10,6 @@ const {errResponse} = require("../../../config/response");
 
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const { createPool } = require("mysql");
 
 
 // 회원가입 api 관련
@@ -26,14 +27,13 @@ exports.createUser = async function (nickName, email, password) {
             .createHash("sha512")
             .update(password)
             .digest("hex");
-        const insetUserInfoParams = [nickName, email, password];
-        //const Connection = await pool.getConnection(async (conn) => conn); //TODO : DB 연결 시 수정
+        const insertUserInfoParams = [nickName, email, password];
 
-        const userIdResult = await userDao.insertUserInfo(insertUserInfoParams); //TODO : DB 연결 시 수정할 수도
-        //insertInfo...?
-        
+        const connection = await pool.getConnection(async (conn) => conn);
+
+        const userIdResult = await userDao.insertUserInfo(connection, insertUserInfoParams);         
         console.log(`추가된 회원 : ${userIdResult[0].insertId}`);
-        // connection.release();
+        connection.release();
         return response(baseResponse.SUCCESS);
 
     } catch (err){

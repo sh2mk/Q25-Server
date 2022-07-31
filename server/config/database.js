@@ -1,2 +1,22 @@
-// .env 파일에서 db 관련 사항을 정리해서 이 파일은 사용하지 않을 수도 있을 듯 싶습니다.
-// 일단은 살려두고 서버 연결하면서 결정하는 걸로 해요!
+const mysql = require('mysql2/promise');
+const {logger} = require('./winston');
+
+require('dotenv').config()
+let host = process.env.DB_HOST;
+let user = process.env.DB_USER;
+let port = process.env.DB_PORT;
+let password = process.env.DB_PASSWD;
+let database = process.env.DB_DATABASE;
+
+//env 파일과 연결
+const pool = mysql.createPool({
+    host,
+    user,
+    port,
+    password,
+    database
+});
+
+module.exports = {
+    pool : pool
+};
