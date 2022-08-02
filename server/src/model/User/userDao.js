@@ -26,7 +26,36 @@ async function selectUserEmail(connection, email) {
     return emailRows;
 }
 
+
+async function selectUserPassword(connection, email){
+
+    console.log("비밀번호 조회 시작")
+
+    const selectUserPasswordQuery=`
+        SELECT password
+        FROM christmas25.usertbl
+        WHERE email = ? ;
+        `
+    const [selectUserPassword] = await connection.query(selectUserPasswordQuery,email)
+    return selectUserPassword;
+    //console.log(query);
+    /*
+    db.query(selectUserPasswordQuery ,[password], (err, data)=>{
+        if(err) {
+            console.log("조회 실패", err);
+            reject(err);
+        }
+        else {
+            console.log("조회 성공");
+            resolve(data);
+        }
+    })
+    */
+
+}
+
 module.exports = {
     insertUserInfo,
-    selectUserEmail
+    selectUserEmail,
+    selectUserPassword,
 };
