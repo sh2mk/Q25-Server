@@ -41,3 +41,46 @@ exports.createUser = async function (nickName, email, password) {
         return errResponse(baseResponse.DB_ERROR);
     }
 };
+
+
+exports.postSignIn = async function (email, password) {
+    try {
+        const emailRows = await userProvider.emailCheck(email); //이메일 확인
+
+        if (emailRows[0].email != email) {
+            return errResponse(baseResponse.SIGNIN_EMAIL_WRONG);
+        }
+        console.log("이메일맞음");
+
+        const passwordRows = await userProvider.passwordCheck(email);
+
+        if (passwordRows[0].password != password) {
+            return errResponse(baseResponse.SIGNIN_PASSWORD_WRONG);
+        }
+
+        console.log("이메일",emailRows[0].email, passwordRows)
+        /*
+        const userAccountRows = await userProvider.accountCheck(email);
+
+        if (userAccountRows[0].status == "INACTIVE") {
+            return errResponse(baseResponse.SIGNIN_INACTIVE_ACCOUNT);
+        } else if (userAccountRows[0].status == "DELETED") {
+            return errResponse(baseResponse.SIGNIN_WITHDRAWAL_ACCOUNT);
+        }
+        */
+/*
+        let token = jwt.sign(
+            { userIdx: userAccountRows[0].userIdx },
+            secret_config.jwtsecret,
+            { expiresIn: "365d", subject: "User" }
+        );
+*/
+
+        let token = "임시토큰";
+        return response(baseResponse.SUCCESS, token);
+    } catch (err) {
+        console.log(`App - postSignIn Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+};
+
