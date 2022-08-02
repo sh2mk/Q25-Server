@@ -9,7 +9,6 @@ module.exports = function(app) {
     // 1. 회원가입 API
     app.post('/members/signup', user.postUsers);
 
-    // 2.1 일반로그인 API
-    app.post("/members/login", user.login);
+
 
 };
