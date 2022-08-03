@@ -20,6 +20,9 @@ module.exports = function () {
     /* App (Android, iOS) */
     // TODO: 도메인을 추가할 경우 이곳에 Route를 추가하세요.
     require('../src/model/User/userRoute')(app);
+
+    //마카 - 질문 출력, 작성, 수정 
+    require('../src/model/Record/recordRoute')(app); 
     //require('../src/app/Post/postRoute')(app);
     // require('../src/app/Board/boardRoute')(app);
 
