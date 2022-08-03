@@ -1,20 +1,32 @@
+/*
+require('dotenv').config();
+const host = process.env.DB_HOST;
+const user = process.env.DB_USER;
+const port = process.env.DB_PORT;
+const password = process.env.DB_PASSWD;
+const database = process.env.DB_DATABASE;
+*/
+
 const mysql = require('mysql2/promise');
-const {logger} = require('./winston');
-
-require('dotenv').config()
-let host = process.env.DB_HOST;
-let user = process.env.DB_USER;
-let port = process.env.DB_PORT;
-let password = process.env.DB_PASSWD;
-let database = process.env.DB_DATABASE;
-
-//env 파일과 연결
+/*
 const pool = mysql.createPool({
-    host,
-    user,
-    port,
-    password,
-    database
+    host : host,
+    user : user,
+    port : port,
+    password : password,
+    database : database
+});
+*/
+
+// const {logger} = require('./winston');
+
+
+const pool = mysql.createPool({
+    host: 'localhost',
+    user: 'root',
+    port : '3306',
+    password : 'qlalfdldi',
+    database : 'christmas25'
 });
 
 module.exports = {

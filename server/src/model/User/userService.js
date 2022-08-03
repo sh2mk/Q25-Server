@@ -4,6 +4,7 @@ const { pool } = require("../../../config/database");
 
 const userProvider = require("./userProvider");
 const userDao = require("./userDao");
+const postDao = require("../Post/postDao");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response} = require("../../../config/response");
 const {errResponse} = require("../../../config/response");
@@ -12,7 +13,7 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
 
-// 회원가입 api 관련
+// 회원가입
 exports.createUser = async function (nickName, email, password) {
     try{
         // 이메일 중복 확인
@@ -31,9 +32,18 @@ exports.createUser = async function (nickName, email, password) {
 
         const connection = await pool.getConnection(async (conn) => conn);
 
-        const userIdResult = await userDao.insertUserInfo(connection, insertUserInfoParams);         
+        const userIdResult = await userDao.insertUserInfo(connection, insertUserInfoParams);
         console.log(`추가된 회원 : ${userIdResult[0].insertId}`);
+
+        //추가된 회원에게 25개 질문 할당
+        for (var i=1; i<26; i++){
+            const addNewRowsParams = [userIdResult[0].insertId, i];
+            const addNewRowsResult = await postDao.addNewRows(connection, addNewRowsParams);
+        }
+        console.log(`${userIdResult[0].insertId}번 회원의 질문이 생성되었습니다`);
+
         connection.release();
+
         return response(baseResponse.SUCCESS);
 
     } catch (err){
@@ -41,3 +51,4 @@ exports.createUser = async function (nickName, email, password) {
         return errResponse(baseResponse.DB_ERROR);
     }
 };
+
