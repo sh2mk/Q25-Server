@@ -9,14 +9,16 @@ const {response, errResponse} = require("../../../config/response");
 /*
     API NO.0
     API Name : Test API
-    [GET] /members/test
+    [GET] /members/record
     이메일, 질문번호를 주면 질문번호, 질문내용, 질문이미지, 답변 
 */
 exports.getQuestion = async function (req,res) {
     /*
         body : email, qnum
     */
+    console.log("엥");
    const { email, qnum } = req.body;
+   console.log( email, qnum)
    const getQuestionResponse = await recordService.getQuestion(
     email,
     qnum
@@ -25,13 +27,19 @@ exports.getQuestion = async function (req,res) {
     return res.send(getQuestionResponse);
 };
 
+//저장
 exports.postRecord = async function (req,res) {
     /*
-        body : nickName, email, password
+        body : email, qnum, content
     */
    const { email, qnum, content } = req.body;
-   console.log( email, qnum, content) // 정보 넘어옴
 
-    return res.send(response(baseResponse.SUCCESS));
+   const postRecordResponse = await recordService.postRecord(
+    email, 
+    qnum, 
+    content
+    );
+
+    return res.send(response(postRecordResponse));
 };
 

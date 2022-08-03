@@ -12,11 +12,11 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
 
-// 회원가입 api 관련
+// 선물상자 누르면 보내줄 정보
 exports.getQuestion = async function (email, qnum) {
     try{
         // 이메일에 있는 질문 번호 가져오기
-        console.log("서비스시작");
+        console.log("1서비스시작");
         const questionRows = await recordProvider.getQuestion(email,qnum);
 
         console.log(questionRows);
@@ -31,3 +31,20 @@ exports.getQuestion = async function (email, qnum) {
     }
 };
 
+// 답변 작성시 저장해야할 정보
+exports.postRecord = async function (email, qnum, content) {
+    try{postRecord
+        // 이메일에 있는 질문 번호 가져오기
+        const recordRows = await recordProvider.postRecord(email,qnum,content);
+
+        console.log(recordRows);
+        const connection = await pool.getConnection(async (conn) => conn);
+        connection.release();
+
+        return response(baseResponse.SUCCESS, recordRows);
+
+    } catch (err){
+        logger.error(`postRecord Service error\n : ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+};

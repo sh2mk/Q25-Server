@@ -28,6 +28,26 @@ async function SelectQuestion(connection, email,qnum) {
     return selectQARow;
 }
 
+
+// 답 저장하기
+async function InsertAnswer(connection, email,qnum,content) {
+    const insertAnswerQuery = `
+    UPDATE christmas25.pagetbl
+    SET answer=?
+    WHERE userIdx=? AND questionIdx=? 
+    `;
+    
+    const insertAnswetRow = await connection.query(
+        insertAnswerQuery,
+        [content,
+        email,
+        qnum]
+    );
+
+    return insertAnswetRow;
+}
+
 module.exports = {
     SelectQuestion,
+    InsertAnswer,
 };

@@ -7,5 +7,6 @@ module.exports = function(app) {
     // 3. record API
     app.get('/members/record', record.getQuestion);
     app.post('/members/record', record.postRecord);
+  
 
 };
