@@ -11,3 +11,11 @@ exports.getQuestion = async function(email, qnum) {
 
     return questionResult;
 };
+
+exports.postRecord = async function(email, qnum, content) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const questionResult = await recordDao.InsertAnswer(connection, email, qnum, content); 
+    connection.release();
+
+    return questionResult;
+};
