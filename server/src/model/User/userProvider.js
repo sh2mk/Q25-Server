@@ -11,3 +11,13 @@ exports.emailCheck = async function(email) {
 
     return emailCheckResult;
 };
+
+exports.passwordCheck = async function (email) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const passwordCheckResult = await userDao.selectUserPassword(
+        connection,
+        email
+    );
+    connection.release();
+    return passwordCheckResult;
+  };

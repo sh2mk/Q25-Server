@@ -26,7 +26,23 @@ async function selectUserEmail(connection, email) {
     return emailRows;
 }
 
+async function selectUserPassword(connection, email){
+
+    console.log("비밀번호 조회 시작")
+
+    const selectUserPasswordQuery=`
+        SELECT password
+        FROM christmas25.usertbl
+        WHERE email = ? ;
+        `
+    const [selectUserPassword] = await connection.query(selectUserPasswordQuery,email)
+    return selectUserPassword;
+}
+
+
+
 module.exports = {
     insertUserInfo,
-    selectUserEmail
+    selectUserEmail,
+    selectUserPassword,
 };
