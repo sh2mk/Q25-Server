@@ -21,3 +21,23 @@ exports.passwordCheck = async function (email) {
     connection.release();
     return passwordCheckResult;
   };
+
+  exports.getUserInfo = async function (email) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const getUserInfoResult = await userDao.selectUserInfo(
+        connection,
+        email
+    );
+    connection.release();
+    return getUserInfoResult;
+  };
+
+  exports.accountCheck = async function (email) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const accountCheckesult = await userDao.selectaccount(
+        connection,
+        email
+    );
+    connection.release();
+    return accountCheckesult;
+  };
