@@ -1,9 +1,12 @@
-
 const express = require("./config/express");
 const {logger} = require("./config/winston");
-const app = express();
+var router = express();
 
-require('dotenv').config(); //env 가져옴
-const port = process.env.port; //원하는 port 번호로 수정
-express().listen(port); //port 5000
+router.get('/', function(req, res, next) {
+    res.sendFile(path.join(__dirname, '../../web-front', "index.html"));
+})
+
+require('dotenv').config();
+const port = process.env.port;
+express().listen(port);
 logger.info(`${process.env.NODE_ENV } - API Server Start At port ${port}`);
