@@ -11,7 +11,8 @@ const {errResponse} = require("../../../config/response");
 
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-
+require("dotenv").config();
+const secretkey=process.env.JWT_SECRET_KEY;
 
 // 회원가입
 exports.createUser = async function (nickName, email, password) {
@@ -54,13 +55,13 @@ exports.createUser = async function (nickName, email, password) {
 
 //로그인 수정필요 + 로그아웃 만들어야함
 exports.postSignIn = async function (email, password) {
+
     try {
         const emailRows = await userProvider.emailCheck(email); //이메일 확인
 
         if (emailRows[0].email != email) {
             return errResponse(baseResponse.SIGNIN_EMAIL_WRONG);
         }
-        console.log("이메일맞음");
 
         const passwordRows = await userProvider.passwordCheck(email);
 
@@ -68,25 +69,22 @@ exports.postSignIn = async function (email, password) {
             return errResponse(baseResponse.SIGNIN_PASSWORD_WRONG);
         }
 
-        console.log("이메일",emailRows[0].email, passwordRows)
-        /*
+        //console.log("이메일",emailRows[0].email, passwordRows)
+        
+
+        //일치하면 사용중인 회원인지 탈퇴한 회원인지 확인
         const userAccountRows = await userProvider.accountCheck(email);
 
-        if (userAccountRows[0].status == "INACTIVE") {
+        if (userAccountRows[0].userstatus === "INACTIVE") {
             return errResponse(baseResponse.SIGNIN_INACTIVE_ACCOUNT);
-        } else if (userAccountRows[0].status == "DELETED") {
-            return errResponse(baseResponse.SIGNIN_WITHDRAWAL_ACCOUNT);
-        }
-        */
-/*
+        } 
+
         let token = jwt.sign(
             { userIdx: userAccountRows[0].userIdx },
-            secret_config.jwtsecret,
-            { expiresIn: "365d", subject: "User" }
+            secretkey,
+            { expiresIn: "30d", subject: "User" }
         );
-*/
 
-        let token = "임시토큰";
         return response(baseResponse.SUCCESS, token);
     } catch (err) {
         console.log(`App - postSignIn Service error\n: ${err.message}`);

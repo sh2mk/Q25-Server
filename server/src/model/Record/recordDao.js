@@ -2,7 +2,7 @@
 // 질문, 답변가져오기 (답은 null일수도있음)
 async function SelectQuestion(connection, email,qnum) {
     const selectQuestion = `
-        SELECT *
+        SELECT questionIdx, content, CONCAT('http://localhost:3001/images/', questionImg)
         FROM christmas25.questiontbl
         WHERE questionIdx = ?
     `;

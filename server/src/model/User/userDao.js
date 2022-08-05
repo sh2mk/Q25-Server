@@ -28,8 +28,6 @@ async function selectUserEmail(connection, email) {
 
 async function selectUserPassword(connection, email){
 
-    console.log("비밀번호 조회 시작")
-
     const selectUserPasswordQuery=`
         SELECT password
         FROM christmas25.usertbl
@@ -41,8 +39,38 @@ async function selectUserPassword(connection, email){
 
 
 
+
+//토큰
+async function selectaccount(connection, email){
+
+
+    const selectaccountQuery=`
+        SELECT userIdx, userStatus
+        FROM christmas25.usertbl
+        WHERE email = ?
+        `
+    const [selectaccountRows] = await connection.query(selectaccountQuery,email)
+    return selectaccountRows;
+}
+
+async function seletUserToken(connection, userIdx){
+
+    const seletUserTokenQuery=`
+        SELECT tokenIdx
+        FROM christmas25.tokentbl
+        WHERE userIdx = ?
+        `
+    const [seletUserToken] = await connection.query(seletUserTokenQuery,userIdx)
+    return seletUserToken;
+}
+
+
+
+
 module.exports = {
     insertUserInfo,
     selectUserEmail,
     selectUserPassword,
+    selectaccount,
+    seletUserToken,
 };

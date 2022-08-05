@@ -60,14 +60,11 @@ exports.postUsers = async function (req, res) {
 
 
 exports.login = async function (req, res) {
-     console.log("로그인시작");
-     
      
      /**
       * Body: email, password,
       */
      const { email, password } = req.body;
-     console.log(email, password);
  
      if (!email) return res.send(errResponse(baseResponse.SIGNIN_EMAIL_WRONG));
 
