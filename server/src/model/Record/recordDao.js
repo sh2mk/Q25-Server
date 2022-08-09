@@ -45,13 +45,36 @@ async function SelectQuestion(connection, userIdx,qNum) {
     return selectQARow;
 }
 
+<<<<<<< Updated upstream
 // 답 저장하기
 async function InsertAnswer(connection,answer,userIdx,qNum) {
+=======
+
+// 답변 유무
+async function SelectAnswer(connection, userIdx, questionIdx) {
+>>>>>>> Stashed changes
     const insertAnswerQuery = `
+    SELECT questionIdx, answer
+    FROM christmas25.pagetbl
+    WHERE userIdx = ? 
+    `;
+    
+    const insertAnswetRow = await connection.query(
+        insertAnswerQuery,
+        userIdx
+    );
+
+    return insertAnswetRow;
+}
+
+// 답 저장하기
+async function InsertAnswer(connection, userIdx, questionIdx) {
+    const selectAnswerQuery = `
     UPDATE christmas25.pagetbl
     SET answer=?
     WHERE userIdx=? AND questionIdx=? 
     `;
+<<<<<<< Updated upstream
 
     const insertAnswerRow = await connection.query(
         insertAnswerQuery,
@@ -90,6 +113,14 @@ async function InsertAnswer(connection,answer,userIdx,qNum) {
     const [selectQuestionRow] = await connection.query(
         selectQuestionQuery,
         qNum,
+=======
+    
+    const insertAnswetRow = await connection.query(
+        selectAnswerQuery,
+        [content,
+        email,
+        qnum]
+>>>>>>> Stashed changes
     );
 
 
@@ -113,7 +144,9 @@ async function InsertAnswer(connection,answer,userIdx,qNum) {
     return AnswerRow; 
 }
 
+
 module.exports = {
     SelectQuestion,
     InsertAnswer,
+    SelectAnswer,
 };

@@ -41,9 +41,15 @@
             "hash": "3c080322e8e170b3dd645e7a2d5faf0a4f67222dbb45cf46864aa022ccda5a51"
         },
         {
+<<<<<<< Updated upstream
             "date": 1659986274598,
             "name": "log\\2022-08-09-smart-push.log",
             "hash": "bc1b892b74d0213e4bddc892f406e05759e917a65788b1f657e86c7923d098c7"
+=======
+            "date": 1659868367623,
+            "name": "log\\2022-08-07-smart-push.log",
+            "hash": "31baac5870ae36bd050cecfa4cad653be10d93471e219dd09de614e8c19579f4"
+>>>>>>> Stashed changes
         }
     ],
     "hashType": "sha256"

@@ -43,3 +43,19 @@ exports.patchRecord = async function (req,res) {
     
 };
 
+//회원답변정보가져오기
+exports.getInfo = async function (req,res) {
+    /*
+        body : userIdx, questionIdx
+    */
+   const { userIdx, questionIdx } = req.body;
+
+   const getInfoResponse = await recordService.getInfo(
+    userIdx, 
+    questionIdx
+    );
+
+    return res.send(response(getInfoResponse));
+};
+
+
