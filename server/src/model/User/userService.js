@@ -108,26 +108,22 @@ function createRandomPassword(variable, pwlength){
 };
 const randomPassword = createRandomPassword(variable, 8);
 
+let transport = nodemailer.createTransport({
+    host : 'smtp.gmail.com',
+    port : 465,
+    secure : true,
+    auth : {
+        user : process.env.EMAIL_USER,
+        pass : process.env.EMAIL_PASSWORD
+    }
+});
+
+
 // 임시 비밀번호 발송
-require("dotenv").config();
 exports.sendPw = async function (userEmail) {
     const connection = await pool.getConnection(async (conn) => conn);
     try{
-        console.log(`${userEmail}로 메일을 발송합니다`);
-
-        // 임시 비밀번호 발송 함수
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            secure : true,
-            // port: 465,
-            auth: {
-                user : process.env.EMAIL_USER,
-                pass : process.env.EMAIL_PASSWORD
-            }
-        });
-        console.log(`발송처 : ${process.env.EMAIL_USER}`);
-        
-        const mailOptions = {
+        let mailOptions = {
             from : process.env.EMAIL_USER, //TODO : 팀 이름 결정되면 수정
             to : userEmail,
             subject : '[TEST] ChristmasQ25에서 임시 비밀번호를 알려드립니다',//TODO : 팀 이름 결정되면 수정
@@ -137,21 +133,28 @@ exports.sendPw = async function (userEmail) {
             <br><h3>임시 비밀번호로 로그인 하신 후, 반드시 비밀번호를 수정해 주세요.</h3>
             `
         };// TODO : 멘트 변경
-        console.log(`random password : ${randomPassword}`);
 
+        //console.log(`${userEmail}로 메일 발송을 시도합니다.`);
+        //console.log(`random password : ${randomPassword}`);
         const emailRows = await userProvider.emailCheck(userEmail);
-        console.log(`수신인 : ${emailRows[0].nickName}`);
-        if (emailRows[0].nickName.length > 0){
-            console.log('계정 존재. 메일을 발송합니다.');
-            transporter.sendMail(mailOptions, function(error, info){
-                if(error){
-                    return response(baseResponse.SEND_TEMPPW_ERROR);
+
+        //console.log(`발신인 : ${process.env.EMAIL_USER}`);
+        if (emailRows.length > 0){
+            console.log(`수신인 : ${emailRows[0].nickName}`);
+            transport.sendMail(mailOptions, function(err, info) {
+                if (err){
+                    console.log(err);
                 } else {
-                    console.log(`${userEmail}에게 메일이 발송되었습니다.`, info.response);
+                    //console.log(info);
+                    //console.log(`${userEmail}에게 메일이 발송되었습니다.`);
+                    return response(baseResponse.SUCCESS);
                 }
-            });
+            })
+        } else{
+            //console.log('등록되지 않은 이메일입니다');
+            return errResponse(baseResponse.USER_USEREMAIL_NOT_EXIST);
         };
-        return response(baseResponse.SUCCESS);
+        
     } catch (err) {
         logger.error(`sendTmpPw Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
