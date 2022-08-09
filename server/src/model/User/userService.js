@@ -4,13 +4,16 @@ const { pool } = require("../../../config/database");
 
 const userProvider = require("./userProvider");
 const userDao = require("./userDao");
-const postDao = require("../Post/postDao");
+const recordDao = require("../Record/recordDao");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response} = require("../../../config/response");
 const {errResponse} = require("../../../config/response");
 
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const nodemailer = require('nodemailer');
+const express = require('express');
+const router = express.Router();
 require("dotenv").config();
 const secretkey=process.env.JWT_SECRET_KEY;
 
@@ -39,7 +42,7 @@ exports.createUser = async function (nickName, email, password) {
         //추가된 회원에게 25개 질문 할당
         for (var i=1; i<26; i++){
             const addNewRowsParams = [userIdResult[0].insertId, i];
-            const addNewRowsResult = await postDao.addNewRows(connection, addNewRowsParams);
+            const addNewRowsResult = await recordDao.addNewRows(connection, addNewRowsParams);
         }
         console.log(`${userIdResult[0].insertId}번 회원의 질문이 생성되었습니다`);
 
@@ -92,3 +95,67 @@ exports.postSignIn = async function (email, password) {
     }
 };
 
+// 랜덤 비밀번호 생성 함수
+var variable = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,g,h,i,j,k,l,n,m,o,p,q,r,s,t,u,v,w,x,y,z".split(",");
+
+function createRandomPassword(variable, pwlength){
+    var randomString = "";
+    for(var i=0; i<pwlength; i++){
+        randomString += variable[Math.floor(Math.random()*variable.length)];
+    }
+    return randomString;
+
+};
+const randomPassword = createRandomPassword(variable, 8);
+
+// 임시 비밀번호 발송
+require("dotenv").config();
+exports.sendPw = async function (userEmail) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    try{
+        console.log(`${userEmail}로 메일을 발송합니다`);
+
+        // 임시 비밀번호 발송 함수
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            secure : true,
+            // port: 465,
+            auth: {
+                user : process.env.EMAIL_USER,
+                pass : process.env.EMAIL_PASSWORD
+            }
+        });
+        console.log(`발송처 : ${process.env.EMAIL_USER}`);
+        
+        const mailOptions = {
+            from : process.env.EMAIL_USER, //TODO : 팀 이름 결정되면 수정
+            to : userEmail,
+            subject : '[TEST] ChristmasQ25에서 임시 비밀번호를 알려드립니다',//TODO : 팀 이름 결정되면 수정
+            html : `
+            <h1>ChristmasQ25에서 임시 비밀번호를 알려드립니다.</h1><br>
+            <h3> 임시 비밀번호 : `+randomPassword+`</h3>
+            <br><h3>임시 비밀번호로 로그인 하신 후, 반드시 비밀번호를 수정해 주세요.</h3>
+            `
+        };// TODO : 멘트 변경
+        console.log(`random password : ${randomPassword}`);
+
+        const emailRows = await userProvider.emailCheck(userEmail);
+        console.log(`수신인 : ${emailRows[0].nickName}`);
+        if (emailRows[0].nickName.length > 0){
+            console.log('계정 존재. 메일을 발송합니다.');
+            transporter.sendMail(mailOptions, function(error, info){
+                if(error){
+                    return response(baseResponse.SEND_TEMPPW_ERROR);
+                } else {
+                    console.log(`${userEmail}에게 메일이 발송되었습니다.`, info.response);
+                }
+            });
+        };
+        return response(baseResponse.SUCCESS);
+    } catch (err) {
+        logger.error(`sendTmpPw Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    } finally {
+        connection.release();
+    }
+}

@@ -5,6 +5,7 @@ const userProvider = require("../User/userProvider");
 const userService = require("../User/userService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
+// const regexEmail = require("regex-email");
 
 /*
     API NO.0
@@ -55,7 +56,7 @@ exports.postUsers = async function (req, res) {
    );
 
    return res.send(signUpResponse);
-}
+};
 
 
 
@@ -76,3 +77,26 @@ exports.login = async function (req, res) {
  
      return res.send(signInResponse);
  };
+
+ /*
+     API No. ?
+     API Name : 임시 비밀번호 발송 및 변경
+     [POST] /members/pw 
+*/
+exports.sendTempPw = async function (req, res) {
+    /*
+         body : email //TODO: body값 수정된거 확인해야함!
+    */
+   const email = req.body.email;
+
+   if(!email){
+    return res.send(response(baseResponse.SIGNIN_EMAIL_EMPTY));
+   }
+   //TODO : 이메일 형식 체크?
+//     if (!regexEmail.test(email))
+//         return res.send(response(baseResponse.SIGNUP_EMAIL_ERROR_TYPE));
+
+   const sendPwResponse = await userService.sendPw(email);
+
+   return res.send(sendPwResponse);
+};
