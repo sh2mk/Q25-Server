@@ -18,7 +18,7 @@ async function insertUserInfo(connection, insertUserInfoParams) {
 // 이메일로 회원 조회. 회원가입 시 중복된 이메일 확인용
 async function selectUserEmail(connection, email) {
     const selectUserEmailQuery = `
-        SELECT nickName, email
+        SELECT nickName
         FROM userTBL
         WHERE email = ?;
     `;
