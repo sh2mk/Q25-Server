@@ -8,12 +8,16 @@ const response = ({isSuccess, code, message}, result) => {
     }
    };
   
-   const errResponse = ({isSuccess, code, message}) => {
-     return {
-         isSuccess: isSuccess,
-         code: code,
-         message: message
-       }
-   };
+const errResponse = ({isSuccess, code, message}) => {
+  return {
+      isSuccess: isSuccess,
+      code: code,
+      message: message
+    }
+};
+
+const resreturn =(result) =>{
+  return result
+}
    
-   module.exports = { response, errResponse };
+   module.exports = { response, errResponse, resreturn };
