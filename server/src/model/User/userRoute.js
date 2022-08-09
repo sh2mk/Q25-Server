@@ -2,7 +2,6 @@ module.exports = function(app) {
     const user = require("./userController");
     const jwtMiddleware = require('../../../config/jwtMiddleware');
     
-
     // 0. test API
     app.get('/members/test', user.getTest);
 

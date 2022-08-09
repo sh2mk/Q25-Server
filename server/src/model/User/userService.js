@@ -4,7 +4,7 @@ const { pool } = require("../../../config/database");
 
 const userProvider = require("./userProvider");
 const userDao = require("./userDao");
-const postDao = require("../Post/postDao");
+const recordDao = require("../Record/recordDao");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response} = require("../../../config/response");
 const {errResponse} = require("../../../config/response");
@@ -39,7 +39,7 @@ exports.createUser = async function (nickName, email, password) {
         //추가된 회원에게 25개 질문 할당
         for (var i=1; i<26; i++){
             const addNewRowsParams = [userIdResult[0].insertId, i];
-            const addNewRowsResult = await postDao.addNewRows(connection, addNewRowsParams);
+            const addNewRowsResult = await recordDao.addNewRows(connection, addNewRowsParams);
         }
         console.log(`${userIdResult[0].insertId}번 회원의 질문이 생성되었습니다`);
 
