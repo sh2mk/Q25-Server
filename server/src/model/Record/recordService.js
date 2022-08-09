@@ -32,18 +32,26 @@ exports.getQuestion = async function (email, qnum) {
 
 // 답변 작성시 저장해야할 정보
 exports.postRecord = async function (email, qnum, content) {
-    try{postRecord
+    const connection = await pool.getConnection(async (conn) => conn);
+    try{
         // 이메일에 있는 질문 번호 가져오기
         const recordRows = await recordProvider.postRecord(email,qnum,content);
+        console.log(`recordRows : ${recordRows}`);
 
-        console.log(recordRows);
-        const connection = await pool.getConnection(async (conn) => conn);
-        connection.release();
-
+        //시간 비교
+        const currentTime = new Date();
+        console.log(`current Date : ${currentTime}`);
+        const timeCriteria = await postDao.getTimeCriteria(connection, questionIdx);
+        
+        if (timeCriteria >= currentTime){
+            const updateOpenStatusResult = await recordDao.updateOpenStatus(connection, userQIdx);
+        }
         return response(baseResponse.SUCCESS, recordRows);
 
     } catch (err){
         logger.error(`postRecord Service error\n : ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
+    } finally{
+        connection.release();
     }
 };

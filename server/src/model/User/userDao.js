@@ -1,3 +1,4 @@
+const { USER_USEREMAIL_EMPTY } = require('../../../config/baseResponseStatus');
 
 // 유저 생성
 async function insertUserInfo(connection, insertUserInfoParams) {

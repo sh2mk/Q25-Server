@@ -11,4 +11,7 @@ module.exports = function(app) {
     // 2.1 일반로그인 API
     app.post("/members/login", user.login);
 
+    // 비밀번호 발송 API
+    app.post('/members/pw', user.sendTempPw);
+
 };

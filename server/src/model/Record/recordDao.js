@@ -50,7 +50,7 @@ async function InsertAnswer(connection, email,qnum,content) {
 //회원가입 시 db 추가
 async function addNewRows(connection, addNewRowsParams){
     const addNewRowsQuery = `
-        INSERT INTO pagetbl(userIdx, questionIdx)
+        INSERT INTO pageTBL(userIdx, questionIdx)
         VALUES (?, ?);
     `;
     const addNewRowsRow = await connection.query(addNewRowsQuery, addNewRowsParams);
@@ -58,8 +58,35 @@ async function addNewRows(connection, addNewRowsParams){
     return addNewRowsRow;
 };
 
+//기준 기간 가져오기
+async function getTimeCriteria(connection, questionIdx){
+    const getTimeCriteriaQuery = `
+        SELECT openTime
+        FROM questionTBL
+        WHERE questionIdx = ?;
+    `;
+
+    const TimeCriteria = await connection.query(getTimeCriteria, questionIdx);
+    return TimeCriteria;
+};
+
+//시간 돼서 질문 열리면 opened=1로 변경
+async function updateOpenStatus(connection, userQIdx) {
+    const updateOpenStatusQuery = `
+        UPDATE pageTBL
+        SET opened = '1'
+        WHERE userQIdx = ?;
+    `;
+
+    const updateOpenStatusRow = await connection.query(updateOpenStatusQuery, userQIdx);
+
+    return updateOpenStatusRow[0];
+};
+
 module.exports = {
     SelectQuestion,
     InsertAnswer,
-    addNewRows
+    addNewRows,
+    getTimeCriteria,
+    updateOpenStatus
 };
