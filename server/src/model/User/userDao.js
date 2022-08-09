@@ -44,7 +44,6 @@ async function selectUserPassword(connection, email){
 //토큰
 async function selectaccount(connection, email){
 
-
     const selectaccountQuery=`
         SELECT userIdx, userStatus
         FROM christmas25.usertbl
@@ -64,8 +63,6 @@ async function seletUserToken(connection, userIdx){
     const [seletUserToken] = await connection.query(seletUserTokenQuery,userIdx)
     return seletUserToken;
 }
-
-
 
 
 module.exports = {
