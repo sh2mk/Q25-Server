@@ -10,19 +10,19 @@ const {errResponse} = require("../../../config/response");
 
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const { Console } = require("console");
 
 
 // 선물상자 누르면 보내줄 정보 - email qnum은 다른걸로 바꾸기
-exports.getQuestion = async function (email, qnum) {
+exports.getQuestion = async function (userIdx,qNum) {
     try{
         // 이메일에 있는 질문 번호 가져오기
-        const questionRows = await recordProvider.getQuestion(email,qnum);
-
-        console.log(questionRows);
+        const questionRows = await recordProvider.getQuestion(userIdx,qNum);
         const connection = await pool.getConnection(async (conn) => conn);
         connection.release();
 
-        return response(baseResponse.SUCCESS, questionRows);
+        console.log(questionRows)
+        return resonse(questionRows);
 
     } catch (err){
         logger.error(`getQuestion Service error\n : ${err.message}`);
@@ -31,19 +31,35 @@ exports.getQuestion = async function (email, qnum) {
 };
 
 // 답변 작성시 저장해야할 정보
-exports.postRecord = async function (email, qnum, content) {
-    try{postRecord
-        // 이메일에 있는 질문 번호 가져오기
-        const recordRows = await recordProvider.postRecord(email,qnum,content);
+exports.patchRecord = async function (answer,userIdx,qNum) {
+    try{ 
+    
+        const recordRows = await recordProvider.patchRecord(answer,userIdx,qNum);
+        const connection = await pool.getConnection(async (conn) => conn);
+        connection.release();
+        return response(recordRows);
 
-        console.log(recordRows);
+
+    } catch (err){
+        logger.error(`patchRecord Service error\n : ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+};
+
+
+// 회원답변정보가져오기
+exports.getInfo = async function (userIdx, questionIdx) {
+    try{
+        // 이메일에 있는 질문 번호 가져오기
+        const AnswerRows = await recordProvider.getInfo(userIdx, questionIdx);
         const connection = await pool.getConnection(async (conn) => conn);
         connection.release();
 
-        return response(baseResponse.SUCCESS, recordRows);
+        return response(AnswerRows);
 
     } catch (err){
-        logger.error(`postRecord Service error\n : ${err.message}`);
+        logger.error(`getInfo Service error\n : ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
+
 };

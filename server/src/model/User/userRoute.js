@@ -7,7 +7,7 @@ module.exports = function(app) {
     app.get('/members/test', user.getTest);
 
     // 1. 회원가입 API
-    app.post('/members/signup', user.postUsers);
+    app.post('/members/login', user.postUsers);
 
     // 2.1 일반로그인 API
     app.post("/members/login", user.login);
