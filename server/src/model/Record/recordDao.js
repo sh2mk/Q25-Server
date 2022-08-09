@@ -2,7 +2,7 @@
 // 질문, 답변가져오기 (답은 null일수도있음)
 async function SelectQuestion(connection, userIdx,qNum) {
     const selectQuestion = `
-        SELECT questionIdx as qNum, content as qnacontent, CONCAT('http://localhost:5000/images/', questionImg) as qnaImg
+        SELECT questionIdx as qNum, content as qnacontent, CONCAT('http://localhost:5000/christmasQ25_asset/', questionImg) as qnaImg
         FROM christmas25.questiontbl
         WHERE questionIdx = ?
     `;
@@ -45,14 +45,10 @@ async function SelectQuestion(connection, userIdx,qNum) {
     return selectQARow;
 }
 
-<<<<<<< Updated upstream
 // 답 저장하기
 async function InsertAnswer(connection,answer,userIdx,qNum) {
-=======
 
-// 답변 유무
-async function SelectAnswer(connection, userIdx, questionIdx) {
->>>>>>> Stashed changes
+
     const insertAnswerQuery = `
     SELECT questionIdx, answer
     FROM christmas25.pagetbl
@@ -68,13 +64,12 @@ async function SelectAnswer(connection, userIdx, questionIdx) {
 }
 
 // 답 저장하기
-async function InsertAnswer(connection, userIdx, questionIdx) {
-    const selectAnswerQuery = `
+async function InsertAnswer(connection, userIdx, qNum) {
+    const insertAnswerQuery = `
     UPDATE christmas25.pagetbl
     SET answer=?
     WHERE userIdx=? AND questionIdx=? 
     `;
-<<<<<<< Updated upstream
 
     const insertAnswerRow = await connection.query(
         insertAnswerQuery,
@@ -106,21 +101,13 @@ async function InsertAnswer(connection, userIdx, questionIdx) {
         qNum]
     );
     const selectQuestionQuery = `
-    SELECT questionIdx as qNum , CONCAT('http://localhost:5000/images/', questionImg) as qnaImg, content as qnacontent
+    SELECT questionIdx as qNum , CONCAT('http://localhost:5000/christmasQ25_asset/', questionImg) as qnaImg, content as qnacontent
     FROM christmas25.questiontbl
     WHERE questionIdx = ?
     `;
     const [selectQuestionRow] = await connection.query(
         selectQuestionQuery,
         qNum,
-=======
-    
-    const insertAnswetRow = await connection.query(
-        selectAnswerQuery,
-        [content,
-        email,
-        qnum]
->>>>>>> Stashed changes
     );
 
 
@@ -148,5 +135,4 @@ async function InsertAnswer(connection, userIdx, questionIdx) {
 module.exports = {
     SelectQuestion,
     InsertAnswer,
-    SelectAnswer,
 };

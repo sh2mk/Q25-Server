@@ -31,7 +31,6 @@ exports.getQuestion = async function (userIdx,qNum) {
 };
 
 // 답변 작성시 저장해야할 정보
-<<<<<<< Updated upstream
 exports.patchRecord = async function (answer,userIdx,qNum) {
     try{ 
     
@@ -39,12 +38,7 @@ exports.patchRecord = async function (answer,userIdx,qNum) {
         const connection = await pool.getConnection(async (conn) => conn);
         connection.release();
         return response(recordRows);
-=======
-exports.postRecord = async function (email, qnum, content) {
-    try{
-        // 이메일에 있는 질문 번호 가져오기
-        const recordRows = await recordProvider.postRecord(email,qnum,content);
->>>>>>> Stashed changes
+
 
     } catch (err){
         logger.error(`patchRecord Service error\n : ${err.message}`);
@@ -67,25 +61,5 @@ exports.getInfo = async function (userIdx, questionIdx) {
         logger.error(`getInfo Service error\n : ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
-<<<<<<< Updated upstream
-=======
-};
 
-
-// 회원답변정보가져오기
-exports.getInfo = async function (userIdx, questionIdx) {
-    try{
-        // 이메일에 있는 질문 번호 가져오기
-        const AnswerRows = await recordProvider.getInfo(userIdx, questionIdx);
-        console.log(AnswerRows);
-        const connection = await pool.getConnection(async (conn) => conn);
-        connection.release();
-
-        return response(baseResponse.SUCCESS, AnswerRows);
-
-    } catch (err){
-        logger.error(`postRecord Service error\n : ${err.message}`);
-        return errResponse(baseResponse.DB_ERROR);
-    }
->>>>>>> Stashed changes
 };

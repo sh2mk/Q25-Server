@@ -18,10 +18,8 @@ exports.patchRecord = async function(answer,userIdx,qNum) {
     const InsertResult = await recordDao.InsertAnswer(connection,answer,userIdx,qNum);  
     connection.release();
 
-<<<<<<< Updated upstream
     return InsertResult;
-=======
-    return questionResult;
+
 };
 
 exports.getInfo = async function(userIdx, questionIdx) {
@@ -30,5 +28,4 @@ exports.getInfo = async function(userIdx, questionIdx) {
     connection.release();
 
     return Answer;
->>>>>>> Stashed changes
 };
