@@ -22,7 +22,7 @@ exports.getQuestion = async function (userIdx,qNum) {
         connection.release();
 
         console.log(questionRows)
-        return resonse(questionRows);
+        return response(baseResponse.SUCCESS,questionRows);
 
     } catch (err){
         logger.error(`getQuestion Service error\n : ${err.message}`);
@@ -35,18 +35,18 @@ exports.patchRecord = async function (answer,userIdx,qNum) {
     const connection = await pool.getConnection(async (conn) => conn);
     try{ 
         const recordRows = await recordProvider.patchRecord(answer,userIdx,qNum);
-
+        /*
         //시간 비교
         const currentTime = new Date();
         console.log(`current Date : ${currentTime}`);
-        const timeCriteria = await postDao.getTimeCriteria(connection, questionIdx);
-        
+        const timeCriteria = await recordDao.getTimeCriteria(connection, qNum);
+
         if (timeCriteria >= currentTime){
             const updateOpenStatusResult = await recordDao.updateOpenStatus(connection, userQIdx);
         }
-
+*/
         connection.release();
-        return response(recordRows);
+        return response(baseResponse.SUCCESS, recordRows);
 
 
     } catch (err){
@@ -59,17 +59,18 @@ exports.patchRecord = async function (answer,userIdx,qNum) {
 
 
 // 회원답변정보가져오기
-exports.getInfo = async function (userIdx, questionIdx) {
+exports.getCollection = async function (userIdx) {
     try{
         // 이메일에 있는 질문 번호 가져오기
-        const AnswerRows = await recordProvider.getInfo(userIdx, questionIdx);
+        const CollectionRows = await recordProvider.getCollection(userIdx);
         const connection = await pool.getConnection(async (conn) => conn);
         connection.release();
 
-        return response(AnswerRows);
+
+        return response(baseResponse.SUCCESS, CollectionRows);
 
     } catch (err){
-        logger.error(`getInfo Service error\n : ${err.message}`);
+        logger.error(`getCollection Service error\n : ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
 
