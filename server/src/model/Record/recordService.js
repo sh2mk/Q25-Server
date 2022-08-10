@@ -44,8 +44,8 @@ exports.patchRecord = async function (answer,userIdx,qNum) {
         if (timeCriteria >= currentTime){
             const updateOpenStatusResult = await recordDao.updateOpenStatus(connection, userQIdx);
         }
-
         connection.release();
+
         return response(baseResponse.SUCCESS, recordRows);
 
 
