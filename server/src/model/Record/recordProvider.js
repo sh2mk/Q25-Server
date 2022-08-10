@@ -24,7 +24,6 @@ exports.patchRecord = async function(answer,userIdx,qNum) {
 
 exports.getCollection = async function(userIdx) {
 
-
     const connection = await pool.getConnection(async (conn) => conn);
     const Collection = await recordDao.SelectCollection(connection, userIdx); 
     connection.release();
