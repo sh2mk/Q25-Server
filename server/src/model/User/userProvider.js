@@ -49,3 +49,11 @@ exports.LoginCheck = async function(email) {
 
   return LoginCheckResult;
 };
+
+exports.savetoken = async function(userIdx, tokenIdx) {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const savetokenResult = await userDao.InsertUserToken(connection, userIdx, tokenIdx); 
+  connection.release();
+
+  return savetokenResult;
+};

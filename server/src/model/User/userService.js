@@ -88,9 +88,12 @@ exports.postSignIn = async function (email, password) {
             { expiresIn: "30d", subject: "User" }
         );
 
+        //토큰 저장
+        const savetoken = await userProvider.savetoken(userAccountRows[0].userIdx, token)
+
         let loginres = { AT : token , userIdx : userAccountRows[0].userIdx}
 
-        return response(baseResponse.SUCCESS, token);
+        return response(baseResponse.SUCCESS, loginres);
     } catch (err) {
         console.log(`App - postSignIn Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
