@@ -9,7 +9,7 @@ module.exports = function(app) {
     app.post('/members/login', user.postUsers);
 
     // 2.1 일반로그인 API
-    app.post("/members/login", user.login);
+    app.post("/api/members/login", user.login);
 
     // 비밀번호 발송 API
     app.post('/members/pw', user.sendTempPw);
