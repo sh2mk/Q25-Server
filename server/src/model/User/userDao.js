@@ -27,6 +27,18 @@ async function selectUserEmail(connection, email) {
     return emailRows;
 }
 
+//로그인 이메일 확인
+async function selectLoginEmail(connection, email) {
+    const selectLoginEmailQuery = `
+        SELECT email
+        FROM userTBL
+        WHERE email = ?;
+    `;
+    const [emailRows] = await connection.query(selectLoginEmailQuery, email);
+
+    return emailRows;
+}
+
 async function selectUserPassword(connection, email){
 
     const selectUserPasswordQuery=`
@@ -40,8 +52,7 @@ async function selectUserPassword(connection, email){
 
 
 
-
-//토큰
+//토큰 로그인
 async function selectaccount(connection, email){
 
     const selectaccountQuery=`
@@ -64,6 +75,17 @@ async function seletUserToken(connection, userIdx){
     return seletUserToken;
 }
 
+async function InsertUserToken(connection, userIdx){
+
+    const seletUserTokenQuery=`
+        SELECT token 
+        FROM christmas25.tokentbl
+        WHERE userIdx = ?
+        `
+    const [seletUserToken] = await connection.query(seletUserTokenQuery,userIdx)
+    return seletUserToken;
+}
+
 
 module.exports = {
     insertUserInfo,
@@ -71,4 +93,6 @@ module.exports = {
     selectUserPassword,
     selectaccount,
     seletUserToken,
+    InsertUserToken,
+    selectLoginEmail
 };

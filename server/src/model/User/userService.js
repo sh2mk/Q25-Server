@@ -60,7 +60,7 @@ exports.createUser = async function (nickName, email, password) {
 exports.postSignIn = async function (email, password) {
 
     try {
-        const emailRows = await userProvider.emailCheck(email); //이메일 확인
+        const emailRows = await userProvider.LoginCheck(email); //이메일 확인
 
         if (emailRows[0].email != email) {
             return errResponse(baseResponse.SIGNIN_EMAIL_WRONG);
@@ -72,7 +72,7 @@ exports.postSignIn = async function (email, password) {
             return errResponse(baseResponse.SIGNIN_PASSWORD_WRONG);
         }
 
-        //console.log("이메일",emailRows[0].email, passwordRows)
+        console.log("이메일",emailRows[0].email, passwordRows)
         
 
         //일치하면 사용중인 회원인지 탈퇴한 회원인지 확인
@@ -87,6 +87,8 @@ exports.postSignIn = async function (email, password) {
             secretkey,
             { expiresIn: "30d", subject: "User" }
         );
+
+        let loginres = { AT : token , userIdx : userAccountRows[0].userIdx}
 
         return response(baseResponse.SUCCESS, token);
     } catch (err) {
