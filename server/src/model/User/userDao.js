@@ -64,6 +64,7 @@ async function selectaccount(connection, email){
     return selectaccountRows;
 }
 
+//토큰 가져오기
 async function seletUserToken(connection, userIdx){
 
     const seletUserTokenQuery=`
@@ -75,15 +76,15 @@ async function seletUserToken(connection, userIdx){
     return seletUserToken;
 }
 
-async function InsertUserToken(connection, userIdx){
+//토큰 저장
+async function InsertUserToken(connection, userIdx, tokenIdx){
 
-    const seletUserTokenQuery=`
-        SELECT token 
-        FROM christmas25.tokentbl
-        WHERE userIdx = ?
+    const InsertUserTokenQuery=`
+        INSERT INTO tokentbl(tokenIdx, userIdx)
+        VALUES (?, ?);
         `
-    const [seletUserToken] = await connection.query(seletUserTokenQuery,userIdx)
-    return seletUserToken;
+    const [insertUserToken] = await connection.query(InsertUserTokenQuery,[tokenIdx, userIdx])
+    return insertUserToken;
 }
 
 
