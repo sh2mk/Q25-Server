@@ -59,9 +59,13 @@ exports.createUser = async function (nickName, email, password) {
 //로그인 수정필요 + 로그아웃 만들어야함
 exports.postSignIn = async function (email, password) {
 
+    console.log(email, password)
+
     try {
         const emailRows = await userProvider.LoginCheck(email); //이메일 확인
-
+        if(emailRows === null){
+            return errResponse(baseResponse.SIGNIN_EMAIL_WRONG);
+        }
         if (emailRows[0].email != email) {
             return errResponse(baseResponse.SIGNIN_EMAIL_WRONG);
         }
