@@ -221,9 +221,8 @@ console.log(selectCollectionRow)
     return selectCollectionRow;
 }
 
-//질문 리스트 25개
+//질문 리스트 25개 쿼리로 바꿔야함
 async function SelectQlist(connection, userIdx) {
-
     //질문정보
     const selectQuestion = `
         SELECT questionIdx as qNum, content as qnacontent, 

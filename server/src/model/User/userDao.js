@@ -35,7 +35,13 @@ async function selectLoginEmail(connection, email) {
         WHERE email = ?;
     `;
     const [emailRows] = await connection.query(selectLoginEmailQuery, email);
-
+    if(emailRows.length > 0){
+    }
+    else{
+        let i = {email : null }
+        emailRows.push(i);
+    }
+    console.log(emailRows)
     return emailRows;
 }
 
