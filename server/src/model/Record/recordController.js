@@ -60,7 +60,8 @@ exports.getCollection = async function (req,res) {
 //질문리스트 -------------------------------------------------------------쿼리 못받아서 userIdx 강제입력
 exports.getQlist = async function (req,res) {
     /*
-        body : userIdx, questionIdx
+        body : 
+        쿼리 : userIdx
     */
    const { userIdx } = req.body;
    //사용할 userIdx 번호 넣어서 하시면 됩니다 
