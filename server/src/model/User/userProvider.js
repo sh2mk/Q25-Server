@@ -57,3 +57,11 @@ exports.savetoken = async function(userIdx, tokenIdx) {
 
   return savetokenResult;
 };
+
+exports.InsertPw = async function(userIdx, old_pw, new_pw) {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const InsertPw = await userDao.InsertPw(connection, userIdx, old_pw, new_pw); 
+  connection.release();
+
+  return InsertPw;
+};

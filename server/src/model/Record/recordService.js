@@ -84,8 +84,6 @@ exports.getQlist = async function (userIdx) {
         const getQlistRows = await recordProvider.getQlistRows(userIdx);
         const connection = await pool.getConnection(async (conn) => conn);
         connection.release();
-
-
         return response(baseResponse.SUCCESS, getQlistRows);
 
     } catch (err){

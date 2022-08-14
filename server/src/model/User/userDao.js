@@ -71,8 +71,7 @@ async function selectaccount(connection, email){
 }
 
 //토큰 가져오기
-async function seletUserToken(connection, userIdx){
-
+async function seletUserToken(connection,userIdx){
     const seletUserTokenQuery=`
         SELECT tokenIdx
         FROM christmas25.tokentbl
@@ -93,6 +92,37 @@ async function InsertUserToken(connection, userIdx, tokenIdx){
     return insertUserToken;
 }
 
+//비밀번호 변경
+async function InsertPw(connection, userIdx, old_pw, new_pw){
+    const selectOldPwQuery=`
+        Select password as old_pw
+        FROM christmas25.usertbl
+        WHERE userIdx = ?
+        `;
+    const [selectOld] = await connection.query(selectOldPwQuery,[userIdx])
+
+    if(old_pw != selectOld[0].old_pw){
+        let i = { old_pw : null }
+        return i
+    }
+
+    const InsertPwQuery=`
+        UPDATE christmas25.usertbl
+        SET password = ?
+        WHERE userIdx=?
+        `;
+    const [insertPw] = await connection.query(InsertPwQuery,[new_pw, userIdx])
+
+    const selectNewPwQuery=`
+        Select password as new_pw
+        FROM christmas25.usertbl
+        WHERE userIdx = ?
+        `;
+    const [selectNewPw] = await connection.query(selectNewPwQuery,[userIdx])
+    
+    return selectNewPw;
+}
+
 
 module.exports = {
     insertUserInfo,
@@ -101,5 +131,6 @@ module.exports = {
     selectaccount,
     seletUserToken,
     InsertUserToken,
-    selectLoginEmail
+    selectLoginEmail,
+    InsertPw
 };
