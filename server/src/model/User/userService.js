@@ -4,7 +4,6 @@ const { pool } = require("../../../config/database");
 
 const userProvider = require("./userProvider");
 const userDao = require("./userDao");
-const recordDao = require("../Record/recordDao");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response} = require("../../../config/response");
 const {errResponse} = require("../../../config/response");
@@ -104,89 +103,3 @@ exports.postSignIn = async function (email, password) {
     }
 };
 
-// 랜덤 비밀번호 생성 함수
-var variable = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,g,h,i,j,k,l,n,m,o,p,q,r,s,t,u,v,w,x,y,z".split(",");
-
-function createRandomPassword(variable, pwlength){
-    var randomString = "";
-    for(var i=0; i<pwlength; i++){
-        randomString += variable[Math.floor(Math.random()*variable.length)];
-    }
-    return randomString;
-
-};
-const randomPassword = createRandomPassword(variable, 8);
-
-let transport = nodemailer.createTransport({
-    host : 'smtp.gmail.com',
-    port : 465,
-    secure : true,
-    auth : {
-        user : process.env.EMAIL_USER,
-        pass : process.env.EMAIL_PASSWORD
-    }
-});
-
-
-// 임시 비밀번호 발송
-exports.sendPw = async function (userEmail) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    try{
-        let mailOptions = {
-            from : process.env.EMAIL_USER, //TODO : 팀 이름 결정되면 수정
-            to : userEmail,
-            subject : '[TEST] ChristmasQ25에서 임시 비밀번호를 알려드립니다',//TODO : 팀 이름 결정되면 수정
-            html : `
-            <h1>ChristmasQ25에서 임시 비밀번호를 알려드립니다.</h1><br>
-            <h3> 임시 비밀번호 : `+randomPassword+`</h3>
-            <br><h3>임시 비밀번호로 로그인 하신 후, 반드시 비밀번호를 수정해 주세요.</h3>
-            `
-        };// TODO : 멘트 변경
-
-        //console.log(`${userEmail}로 메일 발송을 시도합니다.`);
-        //console.log(`random password : ${randomPassword}`);
-        const emailRows = await userProvider.emailCheck(userEmail);
-
-        //console.log(`발신인 : ${process.env.EMAIL_USER}`);
-        if (emailRows.length > 0){
-            console.log(`수신인 : ${emailRows[0].nickName}`);
-            transport.sendMail(mailOptions, function(err, info) {
-                if (err){
-                    console.log(err);
-                } else {
-                    //console.log(info);
-                    //console.log(`${userEmail}에게 메일이 발송되었습니다.`);
-                    return response(baseResponse.SUCCESS);
-                }
-            })
-        } else{
-            //console.log('등록되지 않은 이메일입니다');
-            return errResponse(baseResponse.USER_USEREMAIL_NOT_EXIST);
-        };
-        
-    } catch (err) {
-        logger.error(`sendTmpPw Service error\n: ${err.message}`);
-        return errResponse(baseResponse.DB_ERROR);
-    } finally {
-        connection.release();
-    }
-}
-
-
-exports.patchPw = async function (userIdx, old_pw, new_pw) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const PwRows = await userProvider.InsertPw(userIdx, old_pw, new_pw);
-    if(PwRows.old_pw === null){
-        return response(baseResponse.UPDATE_PW_WRONG);
-    }
-    try{
-
-        return response(baseResponse.SUCCESS, PwRows);
-
-    } catch (err) {
-        logger.error(`patchPw Service error\n: ${err.message}`);
-        return errResponse(baseResponse.DB_ERROR);
-    } finally {
-        connection.release();
-    }
-}

@@ -46,8 +46,7 @@ exports.patchRecord = async function (answer,userIdx,qNum) {
         }
         */
         connection.release();
-
-        return response(baseResponse.SUCCESS, recordRows);
+        return response(baseResponse.SUCCESS,recordRows);
 
 
     } catch (err){
