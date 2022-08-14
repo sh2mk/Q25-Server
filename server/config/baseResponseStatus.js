@@ -44,7 +44,7 @@ module.exports = {
     POST_CONTENT_LENGTH : { "isSuccess": false, "code": 2024, "message": "게시물 내용은 450자 미만으로 입력해주세요."},
     POST_STATUS_INACTIVE : {"isSuccess" : false, "code": 2025, "message" : "이미 삭제된 게시물입니다. "},
 
-    //비밀번호 변경
+    //비밀번호 변경관련
     UPDATE_PW_WRONG : {"isSuccess":false, "code" : 2026, "message": "비밀번호를 정확하게 입력해주세요." },
 
     // Response error(의미적 validation error)
