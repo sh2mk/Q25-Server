@@ -132,5 +132,5 @@ module.exports = {
     seletUserToken,
     InsertUserToken,
     selectLoginEmail,
-    InsertPw
+    InsertPw,
 };

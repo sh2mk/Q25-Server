@@ -2,8 +2,6 @@ module.exports = function(app) {
     const record = require("./recordController");
     const jwtMiddleware = require('../../../config/jwtMiddleware');
     
-
-    
     // 3. record API
 
     //질문정보가져오기 
