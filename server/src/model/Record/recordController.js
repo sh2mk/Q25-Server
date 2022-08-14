@@ -63,7 +63,8 @@ exports.getQlist = async function (req,res) {
         body : userIdx, questionIdx
     */
    const { userIdx } = req.body;
-let user = 1
+   //사용할 userIdx 번호 넣어서 하시면 됩니다 
+    let user = 1
    const getQlistResponse = await recordService.getQlist(
     user, 
     );
