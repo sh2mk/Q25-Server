@@ -5,6 +5,7 @@ const userProvider = require("../User/userProvider");
 const userService = require("../User/userService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
+const { Console } = require("console");
 // const regexEmail = require("regex-email");
 
 /*
@@ -99,4 +100,15 @@ exports.sendTempPw = async function (req, res) {
    const sendPwResponse = await userService.sendPw(email);
 
    return res.send(sendPwResponse);
+};
+
+exports.patchPw = async function (req, res) {
+    /*
+         body : email //TODO: body값 수정된거 확인해야함!
+    */
+    const { userIdx, old_pw, new_pw } = req.body;
+
+   const patchPwResponse = await userService.patchPw(userIdx, old_pw, new_pw);
+   return res.send(patchPwResponse);
+
 };
